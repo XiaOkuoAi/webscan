@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+    <title>WebScan</title>
+    <script language="javascript" type="text/javascript" src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript"
+            src="//cdn.bootcss.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <style>
+        .main {
+            width: 70%;
+            height: 40%;
+            {#top: 50%;#}
+            {#left: 50%;#}
+            margin-top: 15%;
+            margin-left: 15%;
+            margin-bottom: 5%;
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body>
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <!-- 导航条标题-->
+    　
+    <div class="navbar-header">
+        　 <a href="/" class="navbar-brand"><span class="glyphicon glyphicon-console"
+                                                 aria-hidden="true"></span>WebScan</a>
+        　
+    </div>
+    <!-- 基础导航条-->
+    <ul class="nav navbar-nav ">
+        <li><a href="/whatcms">CMS识别</a></li>
+        <li><a href="/portscan">端口扫描</a></li>
+        <li><a href="/domain">旁站C段</a></li>
+        <li><a href="/fuckcms">漏洞利用</a></li>
+        <li><a href="/fofa">FOFA</a></li>
+        <li><a href="/awvs">AWVS扫描</a></li>
+    </ul>
+</div>
+<div class="main">
+{% block body %}{% endblock %}
+</div>
+</body>
+
+
+<div id="footer" class="container">
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div>
+            <p class="navbar-text navbar-right">
+                &copy; 2018- SecptTeam All Rights Reserved.
+            </p>
+        </div>
+    </nav>
+</div>
+</html>

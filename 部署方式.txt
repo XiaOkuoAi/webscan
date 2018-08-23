@@ -1,0 +1,5 @@
+1.把项目移动到对应文件中中
+2.安装python3.6  https://www.python.org/官网下载即可
+3.安装pip3 https://www.cnblogs.com/wenchengxiaopenyou/p/5709218.html
+4.安装依赖库 pip install -r requirements.txt
+5.使用CMD manage.py runserver运行项目

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block body %}
+  <div class="form-group">
+    <label>输入域名</label>
+    <input type="text" class="form-control" id="url" name="domain">
+  </div>
+  <button type="submit" id="cms" class="btn btn-default">GO!</button>
+    <div class="row main-panel">
+        <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <div class="panel" id="color">
+                    <div class="panel-heading" id="result">
+                       <p class="list-group-item active">结果:</p>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+    <div class="col-md-10">
+        <div class="text-wrap">
+            &nbsp;
+        </div>
+    </div>
+    </div>
+<script type="text/javascript">
+    var cmsapi="/api/cms";
+    var url="";
+    cmspocdict = {{ data|safe  }}
+    {#csrftoken = Cookie.get('csrftoken')#}
+    {#console.log(csrftoken)#}
+
+function request(url,type){
+    $.post(cmsapi,{"url":url,"type":type},function (results){
+    	if(results.status){
+    		$('#poc_'+type).html('<li class="list-group-item"><span class="text-primary">[+] 正在检测========>'+
+    		cmspocdict[type]+'</span></li><li class="list-group-item"><span class="text-success">'+
+    		results.pocresult+'</span></li>')
+    	}else{
+    		$('#poc_'+type).html('<li class="list-group-item"><span class="text-primary">[+] 正在检测========>'+
+    		cmspocdict[type]+'</span></li><li class="list-group-item"><span class="text-danger">[-]未发现异常： '+
+    		cmspocdict[type]+'</span></li>')
+    	}
+    },"json");
+}
+
+function urlcheck(){
+        url=$('#url').val();
+        if(url == '') {
+            alert('请输入域名');
+            return false;
+        }else{
+            return true;
+        }
+}
+
+$(function() {
+    $('#cms').click(function() {
+        if(urlcheck()){
+            poclist='<div class="panel-heading" id="result"><p class="list-group-item active">结果:</p></div>'
+        	for(var i=0;i<cmspocdict.length;i++){
+        		poclist+='<ul class="list-group" id="poc_'+i+'"><li class="list-group-item"><span class="text-primary">正在检测========>'+
+        		cmspocdict[i]+'</span></li></ul>'
+        		$('#color').html(poclist)
+        		request(url,i)
+        	}
+        }
+    });
+});
+</script>
+{% endblock %}

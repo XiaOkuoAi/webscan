@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="container-fluid">
+        <button type="submit" class="btn btn-default" onclick="location.reload();">Scan List</button>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>ScanID</th>
+                <th>Address</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Stop</th>
+                <th>Delete</th>
+                <th>Detail</th>
+                <th>生成导出报告</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for scan in scan_list %}
+                <tr>
+                    <td>{{ scan.scanid }}</td>
+                    <td>{{ scan.address }}</td>
+                    <td>{{ scan.description }}</td>
+                    <td>{{ scan.status }}</td>
+                    <td>
+                        <button type="submit" id="stop" class="btn btn-default" onclick="stop('{{ scan.scanid }}')">停止</button>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-default" onclick="del('{{ scan.scanid }}')">删除</button>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-default" data-toggle="modal" data-target="#myModal" onclick="getvulns('{{ scan.scanid }}')">任务详情</button>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-default" onclick="bg('{{ scan.scanid }}')">导出报告</button>
+                    </td>
+                </tr>
+            {% endfor %}
+                </tbody>
+                </table>
+                <div>
+                    <span class="label label-danger">默认扫描</span>
+                    <input type="text" class="form-control" id="add">
+                    <button type="button" class="btn btn-primary" onclick="add()">添加扫描</button>
+                </div>
+<!-- Modal -->
+<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">漏洞详情</h4>
+      </div>
+      <div class="modal-body">
+          <table class="table-hover">
+            <thead>
+            <tr>
+                <th>漏洞类型</th>
+                <th>危害等级</th>
+                <th>漏洞地址</th>
+                <th>参数</th>
+            </tr>
+            </thead>
+            <tbody id="vuln">
+            </tbody>
+          </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+                <script>
+                     function getvulns(scanid) {
+                        $.post('api/awvs/getvulns', {'scanid': scanid}, function (results) {
+                            tr = ''
+                            for (var i = 0; i < results.length; i++) {
+                                if (results[i]['affects_detail']) {
+                                    tr += '<tr class="active" id=' + i + '><td>' + results[i]['vt_name'] + '</td><td>' + results[i]['severity'] + '</td><td>' + results[i]['affects_url'] + '</td><td>' + results[i]['affects_detail'] + '</td></tr>'
+                                } else {
+                                    tr += '<tr class="active" id=' + i + '><td>' + results[i]['vt_name'] + '</td><td>' + results[i]['severity'] + '</td><td>' + results[i]['affects_url'] + '</td><td>空</td></tr>'
+                                }
+                                $('#vuln').html(tr)
+                                console.log(results[i]['vt_name'])
+                                console.log(results[i]['severity'])
+                                console.log(results[i]['affects_url'])
+                                console.log(results[i]['affects_detail'])
+                            }
+                        }, "json")
+                    }
+                    function del(scanid) {
+                        $.post('api/awvs/delscan', {"scanid":scanid}, function (results) {
+                            if (results.status == 1) {
+                                location.reload()
+                            } else {
+                                location.reload()
+                            }
+                        })
+                    }
+
+                    function stop(scanid) {
+                        $.post('api/awvs/stopscan', {"scanid": scanid}, function (results) {
+                            if (results.status == 1) {
+                                location.reload()
+                            } else {
+                                location.reload()
+                            }
+                        })
+                    }
+                    function add(){
+                        if($('#add').val()!==''){
+                            awvs_add = 'api/awvs/addscan'
+                            target = $('#add').val()
+                            $.post(awvs_add,{'target':target},function (results){
+                                if (results == 1) {
+                                    alert('添加成功')
+                                    location.reload()
+                                } else {
+                                    alert('添加失败')
+                                    location.reload()
+                                }
+                            });
+                        }else {
+                            alert('扫描目标不能为空！')
+                        }
+                    }
+                    function bg(scanid) {
+                        $.post('api/awvs/Presentation', {"scanid": scanid}, function (results) {
+                            if (results == 1) {
+                                alert('导出成功')
+                                location.reload()
+                            } else {
+                                alert('导出失败')
+                                location.reload()
+                            }
+                        })
+                    }
+                </script>
+    <div>
+{% endblock %}

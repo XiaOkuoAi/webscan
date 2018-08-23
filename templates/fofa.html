@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="form-group">
+        <form id="" method="post" action="">
+            <label>输入搜索内容</label>
+            {% csrf_token %}
+            {{ form }}
+             <input type="text" class="form-control" id="url" name="domain">
+            <input type="submit" class="btn btn-success" name="submit" value="提交"/>
+        </form>
+        <br><br>
+        <div class="panel-heading" id="result">
+                        <p class="list-group-item active">结果:</p>
+            {% for foo in list %}
+                 <p class="list-group-item">{{ foo }}</p>
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+{% endblock %}

@@ -1,2 +1,2 @@
-# webscan
-使用Django编写的WEB漏洞扫描框架
+# README
+没写好，先放着

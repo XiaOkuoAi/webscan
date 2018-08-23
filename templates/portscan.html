@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <p class="label label-success">PortScan</p>
+    <form id="form" method="post" action="">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" name="submit"  class="btn btn-primary" value="提交"/>
+    </form>
+    {% for foo in ports %}
+        <p class="alert alert-success">开放{{ foo }}</p>
+    {% endfor %}
+
+{% endblock %}

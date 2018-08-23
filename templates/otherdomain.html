@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <form id="form" method="post" action="">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" name="submit" class="btn btn-success"  value="提交"/>
+    </form>
+    <p class="label label-warning">你要查询的域名是{{ domain }},IP是{{ ip }}，可能不准<br></p>
+    {% if info %}
+        <h1>旁站</h1>
+        {% for i in info %}
+            <p class="alert alert-info">{{ i.domain }}
+            {% if i.title %}
+                <p class="alert alert-info">{{ i.title }}</p>
+            {% else %}
+                <p class="alert alert-info">没有标题</p>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        空
+    {% endif %}
+    <br><br>
+    {% if cduan %}
+        <h1>旁站</h1>
+        {% for i in cduan %}
+            <p class="list-group-item">{{ i }}</p>
+        {% endfor %}
+    {% else %}
+        空
+    {% endif %}
+{% endblock %}

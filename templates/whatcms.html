@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block body %}
+    <h1>cms识别</h1>
+
+    <form id="" method="post" action="">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" name="submit" class="btn btn-primary" value="提交"/>
+    </form>
+    <br><br>
+
+            {{ msg }}
+    <br><br><br>
+    {% for foo in info.cms %}
+        Web指纹：{{ foo.name }} {{ foo.version }}  {{ foo.desc }}
+    {% endfor %}
+    <br>
+    {% for foo in info.language %}
+        语言：{{ foo.name }} {{ foo.version }}  {{ foo.desc }}
+    {% endfor %}
+    <br>
+    {% for foo in info.server %}
+        Web容器：{{ foo.name }} {{ foo.version }}  {{ foo.desc }}
+    {% endfor %}
+    <br>
+    {% for foo in info.unit %}
+        服务器：{{ foo.name }} {{ foo.version }}  {{ foo.desc }}
+    {% endfor %}
+    <br>
+    {% for foo in info.other %}
+        全球排名：{{ foo.name }} {{ foo.version }}  {{ foo.desc }}
+    {% endfor %}
+    <br>
+    {% for foo in info.front %}
+        字体：{{ foo.name }} {{ foo.version }}  {{ foo.desc }}
+    {% endfor %}
+
+    <br>
+    <br>
+    CMS查询由云悉提供API
+{% endblock %}

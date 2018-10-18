@@ -31,7 +31,7 @@ class Whatcms(View):
             return render(request, 'whatcms.html', context={'form': self.form, 'msg': msg})
 
     def cmsinfo(self, url):
-        API = 'http://api.yunsee.cn/fingerApi/?token=KvblfJojHIecEfzaotSVA3kxO4Stnz&id=409'
+        API = 'chabug'
         payload = {'level': '2', 'url': url}
         try:
             req = requests.get(API, params=payload, timeout=100)
